@@ -1,14 +1,11 @@
 import React from 'react';
 import logo from '../logo.svg';
 import '../App.css';
+import { makeStyles } from '@material-ui/core/styles';
+
 import CenteredGrid from './FluidGrid';
 
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-
+/* App Bar */
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,6 +13,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+
+
+/* Footer */
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'white',
   },
 
-  title: {
+  appTitle: {
     flexGrow: 1,
     display: 'none',
     [theme.breakpoints.up('sm')]: {
@@ -89,7 +94,7 @@ function App() {
 
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.appTitle} variant="h6" noWrap>
             My Recipes
           </Typography>
           <div className={classes.search}>
@@ -107,8 +112,8 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <Container component="main" className={classes.main} maxWidth="sm">
-        <CenteredGrid className={classes.main} />
+      <Container component="main" className={classes.main} maxWidth="auto">
+        <CenteredGrid />
       </Container>
 
       <footer className={classes.footer}>
