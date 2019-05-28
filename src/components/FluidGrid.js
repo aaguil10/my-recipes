@@ -1,34 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import Paper from '@material-ui/core/Paper';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import Paper from "@material-ui/core/Paper";
+
+import RecipeCard from "./RecipeCard.js";
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   paper: {
     height: 140,
-    width: 100,
+    width: 100
   },
   control: {
-    padding: theme.spacing(2),
-  },
+    padding: theme.spacing(2)
+  }
 });
 
 class GuttersGrid extends React.Component {
   state = {
-    spacing: '8',
+    spacing: "8"
   };
 
   handleChange = key => (event, value) => {
     this.setState({
-      [key]: value,
+      [key]: value
     });
   };
 
@@ -52,7 +54,7 @@ class GuttersGrid extends React.Component {
           >
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(value => (
               <Grid key={value} item>
-                <Paper className={classes.paper} />
+                <RecipeCard className={classes.paper} />
               </Grid>
             ))}
           </Grid>
@@ -63,7 +65,7 @@ class GuttersGrid extends React.Component {
 }
 
 GuttersGrid.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(GuttersGrid);

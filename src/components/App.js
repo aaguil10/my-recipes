@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../logo.svg';
 import '../App.css';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -8,8 +7,6 @@ import CenteredGrid from './FluidGrid';
 /* App Bar */
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -19,7 +16,6 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 
 
 const useStyles = makeStyles(theme => ({
