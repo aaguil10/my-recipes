@@ -20,7 +20,7 @@ import SaveIcon from "@material-ui/icons/Save";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    minWidth: 400
+    width: 400
   },
   media: {
     height: 0,
@@ -52,6 +52,10 @@ const RecipeCardDisplay = props => {
     setExpanded(!expanded);
   }
 
+  const handleEditClick = () => {
+    props.onClick(props.recipeData);
+  };
+
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -67,7 +71,7 @@ const RecipeCardDisplay = props => {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="Edit Recipe">
-          <CreateIcon />
+          <CreateIcon onClick={handleEditClick} />
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {

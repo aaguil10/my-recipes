@@ -27,18 +27,47 @@ const styles = theme => ({
 
 class GuttersGrid extends React.Component {
   state = {
-    spacing: "8"
-  };
-
-  handleChange = key => (event, value) => {
-    this.setState({
-      [key]: value
-    });
+    spacing: "8",
+    recepies: myData,
+    editMode: Array(myData.length).fill(false)
   };
 
   render() {
+    console.log("Rendering....");
     const { classes } = this.props;
     const { spacing } = this.state;
+
+    const handleEditClick = value => {
+      const newEditMode = this.state.editMode.slice();
+      newEditMode[value.id] = !newEditMode[value.id];
+      this.state.editMode = newEditMode;
+
+      this.setState({ editMode: newEditMode });
+    };
+
+    myData.forEach(value => {
+      setCard(value, this.state.editMode[value.id]);
+    });
+
+    function setCard(value, editMode) {
+      if (editMode) {
+        value.card = (
+          <RecipeCardForm
+            recipeData={value}
+            className={classes.paper}
+            onClick={handleEditClick}
+          />
+        );
+      } else {
+        value.card = (
+          <RecipeCardDisplay
+            recipeData={value}
+            className={classes.paper}
+            onClick={handleEditClick}
+          />
+        );
+      }
+    }
 
     return (
       <Grid
@@ -56,10 +85,7 @@ class GuttersGrid extends React.Component {
           >
             {myData.map(value => (
               <Grid key={value.id} item>
-                <RecipeCardDisplay
-                  recipeData={value}
-                  className={classes.paper}
-                />
+                {value.card}
               </Grid>
             ))}
           </Grid>
