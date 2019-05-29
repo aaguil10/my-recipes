@@ -8,7 +8,9 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import Paper from "@material-ui/core/Paper";
 
-import RecipeCard from "./RecipeCard.js";
+import RecipeCardDisplay from "./RecipeCardDisplay.js";
+import RecipeCardForm from "./RecipeCardForm.js";
+import myData from "./recipes.json";
 
 const styles = theme => ({
   root: {
@@ -52,9 +54,12 @@ class GuttersGrid extends React.Component {
             justify="center"
             spacing={Number(spacing)}
           >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(value => (
-              <Grid key={value} item>
-                <RecipeCard className={classes.paper} />
+            {myData.map(value => (
+              <Grid key={value.id} item>
+                <RecipeCardDisplay
+                  recipeData={value}
+                  className={classes.paper}
+                />
               </Grid>
             ))}
           </Grid>

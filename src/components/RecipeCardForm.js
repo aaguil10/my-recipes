@@ -11,10 +11,14 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import red from "@material-ui/core/colors/red";
-import CreateIcon from "@material-ui/icons/Create";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+
+import TextField from "@material-ui/core/TextField";
+
+import CreateIcon from "@material-ui/icons/Create";
+import SaveIcon from "@material-ui/icons/Save";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -36,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function RecipeCard() {
+function RecipeCardDisplay() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -46,11 +50,21 @@ function RecipeCard() {
 
   return (
     <Card className={classes.card}>
-      <CardHeader
-        title="Shrimp and Chorizo Paella" //recipe name
-        subheader="Serves 4 / prep time 5 minutes" //Short Note
+      <TextField
+        id="filled-bare"
+        className={classes.textField}
+        defaultValue="Title"
+        margin="normal"
+        variant="filled"
       />
-      <CardContent backgroundColor="red">
+      <TextField
+        id="filled-bare"
+        className={classes.textField}
+        defaultValue="Notes"
+        margin="normal"
+        variant="filled"
+      />
+      <CardContent>
         <Typography variant="body2" component="p">
           1 lbs of shrimp
         </Typography>
@@ -59,7 +73,7 @@ function RecipeCard() {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="Add to favorites">
+        <IconButton aria-label="Edit Recipe">
           <CreateIcon />
         </IconButton>
         <IconButton
@@ -108,4 +122,4 @@ function RecipeCard() {
   );
 }
 
-export default RecipeCard;
+export default RecipeCardDisplay;

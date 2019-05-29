@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Shrip with Chorizo",
+    "shortNote": "Serves 2",
+    "ingredients": ["1lbs Shrimp", "1lbs Chorizo"],
+    "steps": ["Cook Shrimp", "cook Chorizo"]
+  },
+  {
+    "id": 2,
+    "title": "Pizza",
+    "shortNote": "Serves 2",
+    "ingredients": [
+      "1bls of pizza dough",
+      "1 cup of pizza sause",
+      "1/2 cup of cheese",
+      "7 slices of pepperoni"
+    ],
+    "steps": [
+      "Roll dough into a ball and then flaten it into a circle",
+      "speread sause over pizza dough",
+      "add chesse and then pepperoni",
+      "Bake dough in oven at 350 degrees"
+    ]
+  }
+]
