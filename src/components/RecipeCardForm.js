@@ -95,7 +95,12 @@ function RecipeCardDisplay(props) {
             </Box>
           </Box>
         ))}
-        <Typography variant="h6">Steps</Typography>
+        <Typography variant="h6">
+          Steps
+          <IconButton aria-label="Add Step">
+            <AddIcon />
+          </IconButton>
+        </Typography>
         {steps.map(step => (
           <Box display="flex" p={1} alignItems="center" className={classes.box}>
             <Box p={1} flexGrow={1} className={classes.box}>
