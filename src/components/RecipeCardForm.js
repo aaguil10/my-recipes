@@ -13,6 +13,8 @@ import AddIcon from "@material-ui/icons/Add";
 import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/Save";
 
+import IngredientItem from "./IngredientItem.js";
+
 const useStyles = makeStyles(theme => ({
   card: {
     width: 400
@@ -31,25 +33,48 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+function buildIngredientObj(ingredients) {
+  let ingredientObjs = [];
+  for (let id = 0; id < ingredients.length; id++) {
+    ingredientObjs.push({ id: id, value: ingredients[id] });
+  }
+  return ingredientObjs;
+}
+
 function RecipeCardDisplay(props) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
   const [title, setTitle] = React.useState(props.recipeData.title);
   const [note, setNote] = React.useState(props.recipeData.shortNote);
   const [ingredients, setIngredients] = React.useState(
-    props.recipeData.ingredients
+    buildIngredientObj(props.recipeData.ingredients)
   );
   const [steps, setSteps] = React.useState(props.recipeData.steps);
 
-  function handleExpandClick() {
-    setExpanded(!expanded);
+  function handleAddIngredient() {
+    const newIngredients = ingredients.slice();
+    newIngredients.push({ id: ingredients.length, value: "" });
+    setIngredients(newIngredients);
   }
+
+  const handleRemoveIngregient = val => {
+    const newIngredients = [];
+    console.log(val);
+    console.log(ingredients);
+    for (let i = 0; i < ingredients.length; i++) {
+      if (ingredients[i].id !== val.id) {
+        newIngredients.push(ingredients[i]);
+      }
+    }
+    console.log(newIngredients);
+    setIngredients(newIngredients);
+  };
 
   return (
     <Card className={classes.card}>
       <CardContent>
         <TextField
           id="filled-bare"
+          label="Name"
           className={classes.textField}
           defaultValue={title}
           margin="normal"
@@ -58,6 +83,7 @@ function RecipeCardDisplay(props) {
         />
         <TextField
           id="filled-bare"
+          label="Short Note"
           className={classes.textField}
           defaultValue={note}
           margin="normal"
@@ -66,28 +92,17 @@ function RecipeCardDisplay(props) {
         />
         <Typography variant="h6">
           Ingredients{" "}
-          <IconButton aria-label="Add Ingredient">
+          <IconButton aria-label="Add Ingredient" onClick={handleAddIngredient}>
             <AddIcon />
           </IconButton>
         </Typography>
         {ingredients.map(ingredient => (
-          <Box display="flex" p={1} alignItems="center" className={classes.box}>
-            <Box p={1} flexGrow={1} className={classes.box}>
-              <TextField
-                id="filled-bare"
-                className={classes.textField}
-                defaultValue={ingredient}
-                margin="normal"
-                variant="filled"
-                style={{ width: "100%" }}
-              />
-            </Box>
-            <Box p={0} className={classes.box}>
-              <IconButton aria-label="Remove Ingredient">
-                <ClearIcon />
-              </IconButton>
-            </Box>
-          </Box>
+          <IngredientItem
+            key={ingredient.id}
+            id={ingredient.id}
+            value={ingredient.value}
+            onClick={handleRemoveIngregient}
+          />
         ))}
         <Typography variant="h6">
           Steps
