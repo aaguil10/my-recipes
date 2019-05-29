@@ -17,7 +17,7 @@ import IngredientItem from "./IngredientItem.js";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    width: 400
+    width: "100%"
   },
   media: {
     height: 0,
@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme => ({
   },
   textField: {
     margin: 0,
-    padding: 0
+    padding: 0,
+    width: "100%"
   }
 }));
 
@@ -79,7 +80,6 @@ function RecipeCardDisplay(props) {
           defaultValue={title}
           margin="normal"
           variant="filled"
-          style={{ width: "100%" }}
         />
         <TextField
           id="filled-bare"
@@ -88,7 +88,6 @@ function RecipeCardDisplay(props) {
           defaultValue={note}
           margin="normal"
           variant="filled"
-          style={{ width: "100%" }}
         />
         <Typography variant="h6">
           Ingredients{" "}

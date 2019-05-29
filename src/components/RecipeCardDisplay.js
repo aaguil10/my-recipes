@@ -14,7 +14,7 @@ import CreateIcon from "@material-ui/icons/Create";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    width: 400
+    width: "100%"
   },
   media: {
     height: 0,

@@ -17,6 +17,9 @@ const styles = theme => ({
   },
   control: {
     padding: theme.spacing(2)
+  },
+  wrapper: {
+    //backgroundColor: "blue"
   }
 });
 
@@ -67,24 +70,16 @@ class GuttersGrid extends React.Component {
     return (
       <Grid
         container
-        className="content-wrapper"
+        className={classes.wrapper}
         spacing={8}
         alignItems="center"
+        justify="center"
       >
-        <Grid item xs={12}>
-          <Grid
-            container
-            className={classes.demo}
-            justify="center"
-            spacing={Number(spacing)}
-          >
-            {myData.map(value => (
-              <Grid key={value.id} item>
-                {value.card}
-              </Grid>
-            ))}
+        {myData.map(value => (
+          <Grid key={value.id} item>
+            {value.card}
           </Grid>
-        </Grid>
+        ))}
       </Grid>
     );
   }
