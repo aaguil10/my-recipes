@@ -11,10 +11,20 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import CreateIcon from "@material-ui/icons/Create";
+import CloudDownload from "@material-ui/icons/CloudDownload";
 
 const useStyles = makeStyles(theme => ({
   card: {
     width: "100%"
+  },
+  cardHeader: {
+    width: 400,
+    paddingBottom: 0,
+    marginBottom: 0
+  },
+  cardContent: {
+    paddingTop: 0,
+    marginTop: 0
   },
   media: {
     height: 0,
@@ -53,6 +63,7 @@ const RecipeCardDisplay = props => {
   return (
     <Card className={classes.card}>
       <CardHeader
+        className={classes.cardHeader}
         title={title} //recipe name
         subheader={note} //Short Note
       />
@@ -66,6 +77,9 @@ const RecipeCardDisplay = props => {
       <CardActions disableSpacing>
         <IconButton aria-label="Edit Recipe">
           <CreateIcon onClick={handleEditClick} />
+        </IconButton>
+        <IconButton aria-label="Edit Recipe">
+          <CloudDownload />
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {
