@@ -7,13 +7,12 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 
 import TextField from "@material-ui/core/TextField";
-import Box from "@material-ui/core/Box";
 
 import AddIcon from "@material-ui/icons/Add";
-import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/Save";
 
 import IngredientItem from "./IngredientItem.js";
+import StepItem from "./StepItem.js";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -42,6 +41,14 @@ function buildIngredientObj(ingredients) {
   return ingredientObjs;
 }
 
+function buildStepObj(steps) {
+  let stepObjs = [];
+  for (let id = 0; id < steps.length; id++) {
+    stepObjs.push({ id: id, value: steps[id] });
+  }
+  return stepObjs;
+}
+
 function RecipeCardDisplay(props) {
   const classes = useStyles();
   const [title, setTitle] = React.useState(props.recipeData.title);
@@ -49,7 +56,9 @@ function RecipeCardDisplay(props) {
   const [ingredients, setIngredients] = React.useState(
     buildIngredientObj(props.recipeData.ingredients)
   );
-  const [steps, setSteps] = React.useState(props.recipeData.steps);
+  const [steps, setSteps] = React.useState(
+    buildStepObj(props.recipeData.steps)
+  );
 
   function handleAddIngredient() {
     const newIngredients = ingredients.slice();
@@ -59,15 +68,28 @@ function RecipeCardDisplay(props) {
 
   const handleRemoveIngregient = val => {
     const newIngredients = [];
-    console.log(val);
-    console.log(ingredients);
     for (let i = 0; i < ingredients.length; i++) {
       if (ingredients[i].id !== val.id) {
         newIngredients.push(ingredients[i]);
       }
     }
-    console.log(newIngredients);
     setIngredients(newIngredients);
+  };
+
+  function handleAddStep() {
+    const newSteps = steps.slice();
+    newSteps.push({ id: steps.length, value: "" });
+    setSteps(newSteps);
+  }
+
+  const handleRemoveStep = val => {
+    const newSteps = [];
+    for (let i = 0; i < steps.length; i++) {
+      if (steps[i].id !== val.id) {
+        newSteps.push(steps[i]);
+      }
+    }
+    setSteps(newSteps);
   };
 
   return (
@@ -105,29 +127,17 @@ function RecipeCardDisplay(props) {
         ))}
         <Typography variant="h6">
           Steps
-          <IconButton aria-label="Add Step">
+          <IconButton aria-label="Add Step" onClick={handleAddStep}>
             <AddIcon />
           </IconButton>
         </Typography>
         {steps.map(step => (
-          <Box display="flex" p={1} alignItems="center" className={classes.box}>
-            <Box p={1} flexGrow={1} className={classes.box}>
-              <TextField
-                id="filled-bare"
-                className={classes.textField}
-                defaultValue={step}
-                margin="normal"
-                variant="filled"
-                multiline
-                style={{ width: "100%" }}
-              />
-            </Box>
-            <Box p={0} className={classes.box}>
-              <IconButton aria-label="Remove Ingredient">
-                <ClearIcon />
-              </IconButton>
-            </Box>
-          </Box>
+          <StepItem
+            key={step.id}
+            id={step.id}
+            value={step.value}
+            onClick={handleRemoveStep}
+          />
         ))}
       </CardContent>
       <CardActions disableSpacing>
