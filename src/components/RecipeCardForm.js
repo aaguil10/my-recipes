@@ -61,7 +61,6 @@ function RecipeCardDisplay(props) {
   );
 
   const handleSaveClick = () => {
-    console.log("title: " + title);
     const ingred = [];
     for (const val in ingredients) {
       ingred.push(ingredients[val].value);
@@ -77,34 +76,31 @@ function RecipeCardDisplay(props) {
       ingredients: ingred,
       steps: stps
     };
-    console.log(recipe);
     props.onClick(recipe);
   };
 
   const handleIngredientChange = val => {
     const newIngredients = [];
     for (const curr in ingredients) {
-      if (ingredients[curr].id == val.id) {
+      if (ingredients[curr].id === val.id) {
         newIngredients.push(val.value);
       } else {
         newIngredients.push(ingredients[curr].value);
       }
     }
     setIngredients(buildIngredientObj(newIngredients));
-    console.log(ingredients);
   };
 
   const handleStepsChange = val => {
     const newSteps = [];
     for (const curr in steps) {
-      if (steps[curr].id == val.id) {
+      if (steps[curr].id === val.id) {
         newSteps.push(val.value);
       } else {
         newSteps.push(steps[curr].value);
       }
     }
     setSteps(buildStepObj(newSteps));
-    console.log(newSteps);
   };
 
   function handleAddIngredient() {

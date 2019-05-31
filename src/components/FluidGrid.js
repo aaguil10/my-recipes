@@ -1,31 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import RecipeCardDisplay from "./RecipeCardDisplay.js";
 import RecipeCardForm from "./RecipeCardForm.js";
 import myData from "./recipes.json";
 
-function buildObj(arr) {
-	const result = [];
-	for (const i in arr) {
-		const curr = arr[i];
-		const recipe = {
-			id: curr.id,
-			title: curr.title,
-			shortNote: curr.note,
-			ingredients: curr.ingredients,
-			steps: curr.steps
-		};
-		result.push(recipe);
-	}
-	return result;
-}
-
 const GuttersGrid = props => {
-	//const classes = styles();
-	const [recipes, setRecipes] = React.useState(buildObj(myData));
+	const [recipes, setRecipes] = React.useState(myData);
 	const [editMode, setEditMode] = React.useState(
 		Array(myData.length).fill(false)
 	);
@@ -43,7 +25,7 @@ const GuttersGrid = props => {
 
 		const newRecepies = [];
 		for (const curr in recipes) {
-			if (recipes[curr].id == value.id) {
+			if (recipes[curr].id === value.id) {
 				newRecepies.push(value);
 			} else {
 				newRecepies.push(recipes[curr]);
@@ -53,7 +35,6 @@ const GuttersGrid = props => {
 	};
 
 	function getCard(value) {
-		console.log("getCard title: " + value.title);
 		if (editMode[value.id]) {
 			return (
 				<RecipeCardForm recipeData={value} onClick={handleSaveClick} />

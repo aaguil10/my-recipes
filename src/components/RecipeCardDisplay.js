@@ -45,12 +45,6 @@ const useStyles = makeStyles(theme => ({
 const RecipeCardDisplay = props => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-  const [title, setTitle] = React.useState(props.recipeData.title);
-  const [note, setNote] = React.useState(props.recipeData.shortNote);
-  const [ingredients, setIngredients] = React.useState(
-    props.recipeData.ingredients
-  );
-  const [steps, setSteps] = React.useState(props.recipeData.steps);
 
   function handleExpandClick() {
     setExpanded(!expanded);
@@ -60,17 +54,15 @@ const RecipeCardDisplay = props => {
     props.onClick(props.recipeData);
   };
 
-  console.log("RecipeCardDisplay title: " + title);
-
   return (
     <Card className={classes.card}>
       <CardHeader
         className={classes.cardHeader}
-        title={title} //recipe name
-        subheader={note} //Short Note
+        title={props.recipeData.title} //recipe name
+        subheader={props.recipeData.shortNote} //Short Note
       />
       <CardContent>
-        {ingredients.map(ingredient => (
+        {props.recipeData.ingredients.map(ingredient => (
           <Typography variant="body2" component="p">
             {ingredient}
           </Typography>
@@ -97,7 +89,7 @@ const RecipeCardDisplay = props => {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Steps:</Typography>
-          {steps.map(step => (
+          {props.recipeData.steps.map(step => (
             <Typography paragraph>{step}</Typography>
           ))}
         </CardContent>
