@@ -127,8 +127,33 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function App() {
+const App = () => {
 	const classes = useStyles();
+	const [recipeList, setRecipeList] = React.useState([]);
+
+	const handleAddClick = () => {
+		const newRecipeList = recipeList.slice();
+		newRecipeList.push({
+			id: newRecipeList.length + 1,
+			title: "New Recipe",
+			shortNote: "Sub Note",
+			ingredients: [],
+			steps: []
+		});
+		setRecipeList(newRecipeList);
+	};
+
+	const handleSaveClick = value => {
+		const newRecipeList = [];
+		for (const curr in recipeList) {
+			if (recipeList[curr].id === value.id) {
+				newRecipeList.push(value);
+			} else {
+				newRecipeList.push(recipeList[curr]);
+			}
+		}
+		setRecipeList(newRecipeList);
+	};
 
 	return (
 		<div className={classes.root}>
@@ -164,6 +189,7 @@ function App() {
 					<IconButton
 						className={classes.addIconMobile}
 						aria-label="Add"
+						onClick={handleAddClick}
 					>
 						<AddIcon />
 					</IconButton>
@@ -175,7 +201,10 @@ function App() {
 				className={classes.main}
 				maxWidth="auto"
 			>
-				<CenteredGrid />
+				<CenteredGrid
+					recipeList={recipeList}
+					handleSaveClick={handleSaveClick}
+				/>
 			</Container>
 
 			<footer className={classes.footer}>
@@ -187,11 +216,11 @@ function App() {
 				</Container>
 			</footer>
 
-			<Fab className={classes.addFab}>
+			<Fab className={classes.addFab} onClick={handleAddClick}>
 				<AddIcon />
 			</Fab>
 		</div>
 	);
-}
+};
 
 export default App;

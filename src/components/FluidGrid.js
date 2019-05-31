@@ -6,21 +6,26 @@ import RecipeCardDisplay from "./RecipeCardDisplay.js";
 import RecipeCardForm from "./RecipeCardForm.js";
 
 const GuttersGrid = props => {
-	console.log("Rendering GuttersGrid");
-
-	console.log(props.recipeList);
-	console.log(props.editMode);
+	const [editMode, setEditMode] = React.useState(
+		Array(props.recipeList.length).fill(false)
+	);
 
 	const handleEditClick = value => {
-		props.handleEditClick(value);
+		const newEditMode = editMode.slice();
+		newEditMode[value.id] = !newEditMode[value.id];
+		setEditMode(newEditMode);
 	};
 
 	const handleSaveClick = value => {
+		const newEditMode = editMode.slice();
+		newEditMode[value.id] = !newEditMode[value.id];
+		setEditMode(newEditMode);
+
 		props.handleSaveClick(value);
 	};
 
 	function getCard(value) {
-		if (props.editMode[value.id]) {
+		if (editMode[value.id]) {
 			return (
 				<RecipeCardForm
 					key={value.id}
@@ -51,7 +56,7 @@ const GuttersGrid = props => {
 };
 
 GuttersGrid.propTypes = {
-	classes: PropTypes.object.isRequired
+	//classes: PropTypes.object.isRequired
 };
 
 export default GuttersGrid;
