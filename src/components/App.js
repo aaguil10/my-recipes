@@ -2,6 +2,8 @@ import React from "react";
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import "typeface-roboto";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 
 import CenteredGrid from "./FluidGrid";
 
@@ -11,6 +13,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
+import IconButton from "@material-ui/core/IconButton";
 
 /* Footer */
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -33,6 +36,19 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(2),
 		marginTop: "auto",
 		backgroundColor: "#fff9c4"
+	},
+	addFab: {
+		color: "#FFFFFF",
+		backgroundColor: "#fdd835",
+		"&:hover": {
+			backgroundColor: "#fdd835"
+		},
+		position: "absolute",
+		bottom: theme.spacing(4),
+		right: theme.spacing(4),
+		[theme.breakpoints.up("sm")]: {
+			display: "none"
+		}
 	},
 
 	appBar: {
@@ -69,6 +85,31 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center"
+	},
+	searchIconMobile: {
+		height: "100%",
+		position: "relative",
+		marginLeft: 0,
+		alignItems: "center",
+		justifyContent: "center",
+		display: "block",
+		color: "#ffffff",
+		[theme.breakpoints.up("sm")]: {
+			display: "none",
+			marginLeft: theme.spacing(1)
+		}
+	},
+	addIconMobile: {
+		height: "100%",
+		position: "relative",
+		alignItems: "center",
+		justifyContent: "center",
+		display: "none",
+		color: "#ffffff",
+		[theme.breakpoints.up("sm")]: {
+			display: "block",
+			marginLeft: theme.spacing(2)
+		}
 	},
 	inputRoot: {
 		color: "inherit"
@@ -114,6 +155,18 @@ function App() {
 							}}
 						/>
 					</div>
+					<IconButton
+						className={classes.searchIconMobile}
+						aria-label="Serach"
+					>
+						<SearchIcon />
+					</IconButton>
+					<IconButton
+						className={classes.addIconMobile}
+						aria-label="Add"
+					>
+						<AddIcon />
+					</IconButton>
 				</Toolbar>
 			</AppBar>
 
@@ -133,6 +186,10 @@ function App() {
 					</Typography>
 				</Container>
 			</footer>
+
+			<Fab className={classes.addFab}>
+				<AddIcon />
+			</Fab>
 		</div>
 	);
 }
