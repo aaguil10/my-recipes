@@ -60,6 +60,8 @@ const RecipeCardDisplay = props => {
     props.onClick(props.recipeData);
   };
 
+  console.log("RecipeCardDisplay title: " + title);
+
   return (
     <Card className={classes.card}>
       <CardHeader

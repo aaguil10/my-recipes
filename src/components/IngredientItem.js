@@ -25,6 +25,11 @@ function IngredientItem(props) {
     props.onClick(props);
   };
 
+  const handleOnChange = val => {
+    const res = { id: props.id, value: val };
+    props.onChange(res);
+  };
+
   return (
     <Box display="flex" p={1} alignItems="center" className={classes.box}>
       <Box p={1} flexGrow={1} className={classes.box}>
@@ -33,6 +38,7 @@ function IngredientItem(props) {
           label="Ingredient"
           className={classes.textField}
           defaultValue={props.value}
+          onChange={e => handleOnChange(e.target.value)}
           margin="normal"
           variant="filled"
           style={{ width: "100%" }}

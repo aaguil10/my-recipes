@@ -7,86 +7,80 @@ import RecipeCardDisplay from "./RecipeCardDisplay.js";
 import RecipeCardForm from "./RecipeCardForm.js";
 import myData from "./recipes.json";
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    height: 140,
-    width: 100
-  },
-  control: {
-    padding: theme.spacing(2)
-  },
-  wrapper: {
-    //backgroundColor: "blue"
-  }
-});
-
-class GuttersGrid extends React.Component {
-  state = {
-    spacing: "8",
-    recepies: myData,
-    editMode: Array(myData.length).fill(false)
-  };
-
-  render() {
-    console.log("Rendering....");
-    const { classes } = this.props;
-    const { spacing } = this.state;
-
-    const handleEditClick = value => {
-      const newEditMode = this.state.editMode.slice();
-      newEditMode[value.id] = !newEditMode[value.id];
-      this.state.editMode = newEditMode;
-
-      this.setState({ editMode: newEditMode });
-    };
-
-    myData.forEach(value => {
-      setCard(value, this.state.editMode[value.id]);
-    });
-
-    function setCard(value, editMode) {
-      if (editMode) {
-        value.card = (
-          <RecipeCardForm
-            recipeData={value}
-            className={classes.paper}
-            onClick={handleEditClick}
-          />
-        );
-      } else {
-        value.card = (
-          <RecipeCardDisplay
-            recipeData={value}
-            className={classes.paper}
-            onClick={handleEditClick}
-          />
-        );
-      }
-    }
-
-    return (
-      <Grid
-        container
-        className={classes.wrapper}
-        spacing={8}
-        alignItems="center"
-        justify="center"
-      >
-        {myData.map(value => (
-          <Grid key={value.id} item>
-            {value.card}
-          </Grid>
-        ))}
-      </Grid>
-    );
-  }
+function buildObj(arr) {
+	const result = [];
+	for (const i in arr) {
+		const curr = arr[i];
+		const recipe = {
+			id: curr.id,
+			title: curr.title,
+			shortNote: curr.note,
+			ingredients: curr.ingredients,
+			steps: curr.steps
+		};
+		result.push(recipe);
+	}
+	return result;
 }
 
-GuttersGrid.propTypes = {
-  classes: PropTypes.object.isRequired
+const GuttersGrid = props => {
+	//const classes = styles();
+	const [recipes, setRecipes] = React.useState(buildObj(myData));
+	const [editMode, setEditMode] = React.useState(
+		Array(myData.length).fill(false)
+	);
+
+	const handleEditClick = value => {
+		const newEditMode = editMode.slice();
+		newEditMode[value.id] = !newEditMode[value.id];
+		setEditMode(newEditMode);
+	};
+
+	const handleSaveClick = value => {
+		const newEditMode = editMode.slice();
+		newEditMode[value.id] = !newEditMode[value.id];
+		setEditMode(newEditMode);
+
+		const newRecepies = [];
+		for (const curr in recipes) {
+			if (recipes[curr].id == value.id) {
+				newRecepies.push(value);
+			} else {
+				newRecepies.push(recipes[curr]);
+			}
+		}
+		setRecipes(newRecepies);
+	};
+
+	function getCard(value) {
+		console.log("getCard title: " + value.title);
+		if (editMode[value.id]) {
+			return (
+				<RecipeCardForm recipeData={value} onClick={handleSaveClick} />
+			);
+		} else {
+			return (
+				<RecipeCardDisplay
+					recipeData={value}
+					onClick={handleEditClick}
+				/>
+			);
+		}
+	}
+
+	return (
+		<Grid container spacing={8} alignItems="center" justify="center">
+			{recipes.map(value => (
+				<Grid key={value.id} item>
+					{getCard(value, editMode[value.id])}
+				</Grid>
+			))}
+		</Grid>
+	);
 };
 
-export default withStyles(styles)(GuttersGrid);
+GuttersGrid.propTypes = {
+	classes: PropTypes.object.isRequired
+};
+
+export default GuttersGrid;

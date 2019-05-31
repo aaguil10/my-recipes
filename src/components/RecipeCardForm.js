@@ -60,6 +60,53 @@ function RecipeCardDisplay(props) {
     buildStepObj(props.recipeData.steps)
   );
 
+  const handleSaveClick = () => {
+    console.log("title: " + title);
+    const ingred = [];
+    for (const val in ingredients) {
+      ingred.push(ingredients[val].value);
+    }
+    const stps = [];
+    for (const val in steps) {
+      stps.push(steps[val].value);
+    }
+    let recipe = {
+      id: props.recipeData.id,
+      title: title,
+      note: note,
+      ingredients: ingred,
+      steps: stps
+    };
+    console.log(recipe);
+    props.onClick(recipe);
+  };
+
+  const handleIngredientChange = val => {
+    const newIngredients = [];
+    for (const curr in ingredients) {
+      if (ingredients[curr].id == val.id) {
+        newIngredients.push(val.value);
+      } else {
+        newIngredients.push(ingredients[curr].value);
+      }
+    }
+    setIngredients(buildIngredientObj(newIngredients));
+    console.log(ingredients);
+  };
+
+  const handleStepsChange = val => {
+    const newSteps = [];
+    for (const curr in steps) {
+      if (steps[curr].id == val.id) {
+        newSteps.push(val.value);
+      } else {
+        newSteps.push(steps[curr].value);
+      }
+    }
+    setSteps(buildStepObj(newSteps));
+    console.log(newSteps);
+  };
+
   function handleAddIngredient() {
     const newIngredients = ingredients.slice();
     newIngredients.push({ id: ingredients.length, value: "" });
@@ -100,6 +147,7 @@ function RecipeCardDisplay(props) {
           label="Name"
           className={classes.textField}
           defaultValue={title}
+          onChange={e => setTitle(e.target.value)}
           margin="normal"
           variant="filled"
         />
@@ -108,6 +156,7 @@ function RecipeCardDisplay(props) {
           label="Short Note"
           className={classes.textField}
           defaultValue={note}
+          onChange={e => setNote(e.target.value)}
           margin="normal"
           variant="filled"
         />
@@ -122,6 +171,7 @@ function RecipeCardDisplay(props) {
             key={ingredient.id}
             id={ingredient.id}
             value={ingredient.value}
+            onChange={handleIngredientChange}
             onClick={handleRemoveIngregient}
           />
         ))}
@@ -136,12 +186,13 @@ function RecipeCardDisplay(props) {
             key={step.id}
             id={step.id}
             value={step.value}
+            onChange={handleStepsChange}
             onClick={handleRemoveStep}
           />
         ))}
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="Save Recipe">
+        <IconButton aria-label="Save Recipe" onClick={handleSaveClick}>
           <SaveIcon />
         </IconButton>
       </CardActions>
