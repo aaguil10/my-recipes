@@ -72,7 +72,7 @@ function RecipeCardDisplay(props) {
     let recipe = {
       id: props.recipeData.id,
       title: title,
-      note: note,
+      shortNote: note,
       ingredients: ingred,
       steps: stps
     };
