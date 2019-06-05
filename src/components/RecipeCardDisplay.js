@@ -9,6 +9,7 @@ import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Container from "@material-ui/core/Container";
 
 import CreateIcon from "@material-ui/icons/Create";
 import CloudDownload from "@material-ui/icons/CloudDownload";
@@ -54,12 +55,17 @@ const RecipeCardDisplay = props => {
     props.onClick(props.recipeData);
   };
 
+  let stepConut = 1;
+  function getStepConut() {
+    return stepConut++;
+  }
+
   return (
     <Card className={classes.card}>
       <CardHeader
         className={classes.cardHeader}
         title={props.recipeData.title} //recipe name
-        subheader={props.recipeData.shortNote} //Short Note
+        subheader={props.recipeData.subtitle} //Short Note
       />
       <CardContent>
         {props.recipeData.ingredients.map(ingredient => (
@@ -88,10 +94,18 @@ const RecipeCardDisplay = props => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Steps:</Typography>
+          <Typography variant="subtitle2">Steps:</Typography>
           {props.recipeData.steps.map(step => (
-            <Typography paragraph>{step}</Typography>
+            <Typography variant="body1">
+              Step {getStepConut()}: {step}
+            </Typography>
           ))}
+          <Typography variant="subtitle2">Notes:</Typography>
+          <Container maxWidth="sm">
+            <Typography variant="body1" paragraph>
+              {props.recipeData.notes}
+            </Typography>
+          </Container>
         </CardContent>
       </Collapse>
     </Card>

@@ -2,6 +2,7 @@ import React from "react";
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import "typeface-roboto";
+import axios from 'axios';
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -130,15 +131,32 @@ const useStyles = makeStyles(theme => ({
 const App = () => {
 	const classes = useStyles();
 	const [recipeList, setRecipeList] = React.useState([]);
+    const [initialized, setInitialized] = React.useState(false);
+    
+    React.useEffect(() => {
+              if (!initialized) {
+              axios
+              .get(
+                   "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/getrecipes"
+                   )
+              .then(({ data }) => {
+                    console.log(data);
+                    setRecipeList(data);
+                    });
+                    
+              setInitialized(true);
+              }
+              });
 
 	const handleAddClick = () => {
 		const newRecipeList = recipeList.slice();
 		newRecipeList.push({
 			id: newRecipeList.length + 1,
 			title: "New Recipe",
-			shortNote: "Sub Note",
+			subtitle: "Sub Note",
 			ingredients: [],
-			steps: []
+			steps: [],
+                           notes:""
 		});
 		setRecipeList(newRecipeList);
 	};

@@ -52,13 +52,14 @@ function buildStepObj(steps) {
 function RecipeCardDisplay(props) {
   const classes = useStyles();
   const [title, setTitle] = React.useState(props.recipeData.title);
-  const [note, setNote] = React.useState(props.recipeData.shortNote);
+  const [subtitle, setSubtitle] = React.useState(props.recipeData.subtitle);
   const [ingredients, setIngredients] = React.useState(
     buildIngredientObj(props.recipeData.ingredients)
   );
   const [steps, setSteps] = React.useState(
     buildStepObj(props.recipeData.steps)
   );
+  const [notes, setNotes] = React.useState(props.recipeData.notes);
 
   const handleSaveClick = () => {
     const ingred = [];
@@ -72,9 +73,10 @@ function RecipeCardDisplay(props) {
     let recipe = {
       id: props.recipeData.id,
       title: title,
-      shortNote: note,
+      subtitle: subtitle,
       ingredients: ingred,
-      steps: stps
+      steps: stps,
+      notes: notes
     };
     props.onClick(recipe);
   };
@@ -149,10 +151,10 @@ function RecipeCardDisplay(props) {
         />
         <TextField
           id="filled-bare"
-          label="Short Note"
+          label="Subtitle"
           className={classes.textField}
-          defaultValue={note}
-          onChange={e => setNote(e.target.value)}
+          defaultValue={subtitle}
+          onChange={e => setSubtitle(e.target.value)}
           margin="normal"
           variant="filled"
         />
@@ -186,6 +188,16 @@ function RecipeCardDisplay(props) {
             onClick={handleRemoveStep}
           />
         ))}
+        <TextField
+          id="filled-bare"
+          label="Notes"
+          className={classes.textField}
+          defaultValue={notes}
+          onChange={e => setNotes(e.target.value)}
+          margin="normal"
+          variant="filled"
+          multiline
+        />
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="Save Recipe" onClick={handleSaveClick}>
