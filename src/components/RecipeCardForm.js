@@ -5,6 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import axios from "axios";
 
 import TextField from "@material-ui/core/TextField";
 
@@ -70,7 +71,7 @@ function RecipeCardDisplay(props) {
     for (const val in steps) {
       stps.push(steps[val].value);
     }
-    let recipe = {
+    const recipe = {
       id: props.recipeData.id,
       title: title,
       subtitle: subtitle,
@@ -78,6 +79,17 @@ function RecipeCardDisplay(props) {
       steps: stps,
       notes: notes
     };
+    axios
+      .post(
+        "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/insert",
+        recipe
+      )
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
     props.onClick(recipe);
   };
 

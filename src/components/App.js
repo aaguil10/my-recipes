@@ -2,7 +2,7 @@ import React from "react";
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import "typeface-roboto";
-import axios from 'axios';
+import axios from "axios";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -22,223 +22,211 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		display: "flex",
-		flexDirection: "column",
-		minHeight: "100vh",
-		backgroundColor: "#fffde7"
-	},
-	main: {
-		marginTop: theme.spacing(5),
-		marginBottom: theme.spacing(5),
-		width: "100%"
-	},
-	footer: {
-		padding: theme.spacing(2),
-		marginTop: "auto",
-		backgroundColor: "#fff9c4"
-	},
-	addFab: {
-		color: "#FFFFFF",
-		backgroundColor: "#fdd835",
-		"&:hover": {
-			backgroundColor: "#fdd835"
-		},
-		position: "absolute",
-		bottom: theme.spacing(4),
-		right: theme.spacing(4),
-		[theme.breakpoints.up("sm")]: {
-			display: "none"
-		}
-	},
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+    backgroundColor: "#fffde7"
+  },
+  main: {
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5),
+    width: "100%"
+  },
+  footer: {
+    padding: theme.spacing(2),
+    marginTop: "auto",
+    backgroundColor: "#fff9c4"
+  },
+  addFab: {
+    color: "#FFFFFF",
+    backgroundColor: "#fdd835",
+    "&:hover": {
+      backgroundColor: "#fdd835"
+    },
+    position: "absolute",
+    bottom: theme.spacing(4),
+    right: theme.spacing(4),
+    [theme.breakpoints.up("sm")]: {
+      display: "none"
+    }
+  },
 
-	appBar: {
-		backgroundImage: "linear-gradient(to right, #fdd835, #ffd600)"
-	},
+  appBar: {
+    backgroundImage: "linear-gradient(to right, #fdd835, #ffd600)"
+  },
 
-	appTitle: {
-		flexGrow: 1,
-		[theme.breakpoints.up("sm")]: {
-			display: "block"
-		}
-	},
-	search: {
-		position: "relative",
-		borderRadius: theme.shape.borderRadius,
-		backgroundColor: fade(theme.palette.common.white, 0.15),
-		"&:hover": {
-			backgroundColor: fade(theme.palette.common.white, 0.25)
-		},
-		marginLeft: 0,
-		width: "100%",
-		display: "none",
-		[theme.breakpoints.up("sm")]: {
-			marginLeft: theme.spacing(1),
-			width: "auto",
-			display: "block"
-		}
-	},
-	searchIcon: {
-		width: theme.spacing(7),
-		height: "100%",
-		position: "absolute",
-		pointerEvents: "none",
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center"
-	},
-	searchIconMobile: {
-		height: "100%",
-		position: "relative",
-		marginLeft: 0,
-		alignItems: "center",
-		justifyContent: "center",
-		display: "block",
-		color: "#ffffff",
-		[theme.breakpoints.up("sm")]: {
-			display: "none",
-			marginLeft: theme.spacing(1)
-		}
-	},
-	addIconMobile: {
-		height: "100%",
-		position: "relative",
-		alignItems: "center",
-		justifyContent: "center",
-		display: "none",
-		color: "#ffffff",
-		[theme.breakpoints.up("sm")]: {
-			display: "block",
-			marginLeft: theme.spacing(2)
-		}
-	},
-	inputRoot: {
-		color: "inherit"
-	},
-	inputInput: {
-		padding: theme.spacing(1, 1, 1, 7),
-		transition: theme.transitions.create("width"),
-		width: "100%",
-		[theme.breakpoints.up("sm")]: {
-			width: 120,
-			"&:focus": {
-				width: 200
-			}
-		}
-	}
+  appTitle: {
+    flexGrow: 1,
+    [theme.breakpoints.up("sm")]: {
+      display: "block"
+    }
+  },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25)
+    },
+    marginLeft: 0,
+    width: "100%",
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(1),
+      width: "auto",
+      display: "block"
+    }
+  },
+  searchIcon: {
+    width: theme.spacing(7),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  searchIconMobile: {
+    height: "100%",
+    position: "relative",
+    marginLeft: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    display: "block",
+    color: "#ffffff",
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+      marginLeft: theme.spacing(1)
+    }
+  },
+  addIconMobile: {
+    height: "100%",
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "none",
+    color: "#ffffff",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+      marginLeft: theme.spacing(2)
+    }
+  },
+  inputRoot: {
+    color: "inherit"
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 7),
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: 120,
+      "&:focus": {
+        width: 200
+      }
+    }
+  }
 }));
 
 const App = () => {
-	const classes = useStyles();
-	const [recipeList, setRecipeList] = React.useState([]);
-    const [initialized, setInitialized] = React.useState(false);
-    
-    React.useEffect(() => {
-              if (!initialized) {
-              axios
-              .get(
-                   "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/getrecipes"
-                   )
-              .then(({ data }) => {
-                    console.log(data);
-                    setRecipeList(data);
-                    });
-                    
-              setInitialized(true);
-              }
-              });
+  const classes = useStyles();
+  const [recipeList, setRecipeList] = React.useState([]);
+  const [initialized, setInitialized] = React.useState(false);
 
-	const handleAddClick = () => {
-		const newRecipeList = recipeList.slice();
-		newRecipeList.push({
-			id: newRecipeList.length + 1,
-			title: "New Recipe",
-			subtitle: "Sub Note",
-			ingredients: [],
-			steps: [],
-                           notes:""
-		});
-		setRecipeList(newRecipeList);
-	};
+  React.useEffect(() => {
+    if (!initialized) {
+      axios
+        .get(
+          "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/getrecipes"
+        )
+        .then(({ data }) => {
+          setRecipeList(data);
+        });
 
-	const handleSaveClick = value => {
-		const newRecipeList = [];
-		for (const curr in recipeList) {
-			if (recipeList[curr].id === value.id) {
-				newRecipeList.push(value);
-			} else {
-				newRecipeList.push(recipeList[curr]);
-			}
-		}
-		setRecipeList(newRecipeList);
-	};
+      setInitialized(true);
+    }
+  });
 
-	return (
-		<div className={classes.root}>
-			<CssBaseline />
+  const handleAddClick = () => {
+    const newRecipeList = recipeList.slice();
+    newRecipeList.push({
+      id: newRecipeList.length + 1,
+      title: "New Recipe",
+      subtitle: "Sub Note",
+      ingredients: [],
+      steps: [],
+      notes: ""
+    });
+    setRecipeList(newRecipeList);
+  };
 
-			<AppBar className={classes.appBar} position="static">
-				<Toolbar>
-					<Typography
-						className={classes.appTitle}
-						variant="h6"
-						noWrap
-					>
-						Grub Note
-					</Typography>
-					<div className={classes.search}>
-						<div className={classes.searchIcon}>
-							<SearchIcon />
-						</div>
-						<InputBase
-							placeholder="Search…"
-							classes={{
-								root: classes.inputRoot,
-								input: classes.inputInput
-							}}
-						/>
-					</div>
-					<IconButton
-						className={classes.searchIconMobile}
-						aria-label="Serach"
-					>
-						<SearchIcon />
-					</IconButton>
-					<IconButton
-						className={classes.addIconMobile}
-						aria-label="Add"
-						onClick={handleAddClick}
-					>
-						<AddIcon />
-					</IconButton>
-				</Toolbar>
-			</AppBar>
+  const handleSaveClick = value => {
+    const newRecipeList = [];
+    for (const curr in recipeList) {
+      if (recipeList[curr].id === value.id) {
+        newRecipeList.push(value);
+      } else {
+        newRecipeList.push(recipeList[curr]);
+      }
+    }
+    setRecipeList(newRecipeList);
+  };
 
-			<Container
-				component="main"
-				className={classes.main}
-				maxWidth="auto"
-			>
-				<CenteredGrid
-					recipeList={recipeList}
-					handleSaveClick={handleSaveClick}
-				/>
-			</Container>
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
 
-			<footer className={classes.footer}>
-				<Container maxWidth="sm">
-					<Typography variant="body1" className="footer-copyright">
-						{" "}
-						© {new Date().getFullYear()} Alejandro Aguilar
-					</Typography>
-				</Container>
-			</footer>
+      <AppBar className={classes.appBar} position="static">
+        <Toolbar>
+          <Typography className={classes.appTitle} variant="h6" noWrap>
+            Grub Note
+          </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput
+              }}
+            />
+          </div>
+          <IconButton className={classes.searchIconMobile} aria-label="Serach">
+            <SearchIcon />
+          </IconButton>
+          <IconButton
+            className={classes.addIconMobile}
+            aria-label="Add"
+            onClick={handleAddClick}
+          >
+            <AddIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
 
-			<Fab className={classes.addFab} onClick={handleAddClick}>
-				<AddIcon />
-			</Fab>
-		</div>
-	);
+      <Container component="main" className={classes.main} maxWidth="auto">
+        <CenteredGrid
+          recipeList={recipeList}
+          handleSaveClick={handleSaveClick}
+        />
+      </Container>
+
+      <footer className={classes.footer}>
+        <Container maxWidth="sm">
+          <Typography variant="body1" className="footer-copyright">
+            {" "}
+            © {new Date().getFullYear()} Alejandro Aguilar
+          </Typography>
+        </Container>
+      </footer>
+
+      <Fab className={classes.addFab} onClick={handleAddClick}>
+        <AddIcon />
+      </Fab>
+    </div>
+  );
 };
 
 export default App;
