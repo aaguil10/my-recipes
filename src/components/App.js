@@ -21,6 +21,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
+const GET_RECIPES_URL =
+  "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/getrecipes";
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
@@ -135,13 +138,9 @@ const App = () => {
 
   React.useEffect(() => {
     if (!initialized) {
-      axios
-        .get(
-          "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/getrecipes"
-        )
-        .then(({ data }) => {
-          setRecipeList(data);
-        });
+      axios.get(GET_RECIPES_URL).then(({ data }) => {
+        setRecipeList(data);
+      });
 
       setInitialized(true);
     }
@@ -149,8 +148,9 @@ const App = () => {
 
   const handleAddClick = () => {
     const newRecipeList = recipeList.slice();
+    const newId = "new" + (newRecipeList.length + 1);
     newRecipeList.push({
-      id: newRecipeList.length + 1,
+      id: newId,
       title: "New Recipe",
       subtitle: "Sub Note",
       ingredients: [],
@@ -161,15 +161,9 @@ const App = () => {
   };
 
   const handleSaveClick = value => {
-    const newRecipeList = [];
-    for (const curr in recipeList) {
-      if (recipeList[curr].id === value.id) {
-        newRecipeList.push(value);
-      } else {
-        newRecipeList.push(recipeList[curr]);
-      }
-    }
-    setRecipeList(newRecipeList);
+    axios.get(GET_RECIPES_URL).then(({ data }) => {
+      setRecipeList(data);
+    });
   };
 
   return (

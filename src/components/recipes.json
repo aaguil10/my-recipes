@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "Shrip with Chorizo",
-    "shortNote": "Serves 2",
+    "subtitle": "Serves 2",
     "ingredients": ["1lbs Shrimp", "1lbs Chorizo"],
     "steps": ["Cook Shrimp", "cook Chorizo"]
   },

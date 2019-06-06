@@ -15,6 +15,9 @@ import SaveIcon from "@material-ui/icons/Save";
 import IngredientItem from "./IngredientItem.js";
 import StepItem from "./StepItem.js";
 
+const INSERT_RECIPE_URL =
+  "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/insert";
+
 const useStyles = makeStyles(theme => ({
   card: {
     width: "100%"
@@ -79,18 +82,18 @@ function RecipeCardDisplay(props) {
       steps: stps,
       notes: notes
     };
+
     axios
-      .post(
-        "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/insert",
-        recipe
-      )
+      .post(INSERT_RECIPE_URL, recipe)
       .then(function(response) {
         console.log(response);
+        props.onClick(recipe);
       })
       .catch(function(error) {
         console.log(error);
       });
-    props.onClick(recipe);
+
+    //Todo: Add loading bar while waiting for recipe to insert.
   };
 
   const handleIngredientChange = val => {
