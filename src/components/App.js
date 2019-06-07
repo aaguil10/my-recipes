@@ -19,6 +19,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import CardGrid from "./CardGrid";
+import Logo from "./Logo";
 
 const GET_RECIPES_URL =
   "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/getrecipes";
@@ -57,12 +58,14 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     backgroundImage: "linear-gradient(to right, #fdd835, #ffd600)"
   },
-
   appTitle: {
     flexGrow: 1,
     [theme.breakpoints.up("sm")]: {
       display: "block"
     }
+  },
+  appLogo: {
+    marginRight: theme.spacing(0)
   },
   search: {
     position: "relative",
@@ -171,7 +174,10 @@ const App = () => {
 
       <AppBar className={classes.appBar} position="static">
         <Toolbar>
-          <Typography className={classes.appTitle} variant="h6" noWrap>
+          <div className={classes.appLogo}>
+            <Logo color="#ffffff" width="48" height="48" />
+          </div>
+          <Typography className={classes.appTitle} variant="h4" noWrap>
             Grub Note
           </Typography>
           <div className={classes.search}>
