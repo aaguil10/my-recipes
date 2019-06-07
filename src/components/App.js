@@ -6,8 +6,6 @@ import axios from "axios";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 
-import CenteredGrid from "./FluidGrid";
-
 /* App Bar */
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -20,6 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import CardGrid from "./CardGrid";
 
 const GET_RECIPES_URL =
   "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/getrecipes";
@@ -201,10 +200,7 @@ const App = () => {
       </AppBar>
 
       <Container component="main" className={classes.main} maxWidth="auto">
-        <CenteredGrid
-          recipeList={recipeList}
-          handleSaveClick={handleSaveClick}
-        />
+        <CardGrid recipeList={recipeList} handleSaveClick={handleSaveClick} />
       </Container>
 
       <footer className={classes.footer}>
