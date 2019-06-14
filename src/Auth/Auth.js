@@ -1,9 +1,12 @@
 import auth0 from "auth0-js";
+import axios from "axios";
 
 const ACCESS_TOKEN = "access_token";
 const ID_TOKEN = "id_token";
 const SCOPE = "scope";
 const EXPIRES_AT = "expires_at";
+const GET_USER_URL =
+  "https://us-central1-myrecipes-f34ca.cloudfunctions.net/users/getUser";
 
 let _idToken = null;
 let _accessToken = null;
@@ -16,11 +19,30 @@ export default class Auth {
     clientID: "1usBkm70LnyBCx8qrXcgbH7EMFP9dwak",
     redirectUri: "http://localhost:3000/callback",
     responseType: "token id_token",
-    scope: "openid"
+    scope: "openid profile email"
   });
 
   login() {
     this.auth0.authorize();
+  }
+
+  logout() {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(SCOPE);
+    localStorage.removeItem(EXPIRES_AT);
+    localStorage.removeItem(ID_TOKEN);
+
+    let auth = new auth0.WebAuth({
+      domain: "grubnote.auth0.com",
+      clientID: "1usBkm70LnyBCx8qrXcgbH7EMFP9dwak",
+      redirectUri: "http://localhost:3000/callback",
+      responseType: "token id_token",
+      scope: "openid profile email"
+    });
+    auth.logout({
+      clientID: "1usBkm70LnyBCx8qrXcgbH7EMFP9dwak",
+      returnTo: "http://localhost:3000"
+    });
   }
 
   handleAuthentication = () => {
@@ -53,8 +75,24 @@ export default class Auth {
     localStorage.setItem(SCOPE, _scopes);
     localStorage.setItem(EXPIRES_AT, _expiresAt);
     localStorage.setItem(ID_TOKEN, _idToken);
+
+    this.getUser(authResult.idTokenPayload);
     this.scheduleTokenRenewal();
   };
+
+  getUser(idTokenPayload) {
+    console.log("***idTokenPayload***");
+    console.log(idTokenPayload);
+    axios
+      .post(GET_USER_URL, idTokenPayload)
+      .then(function(response) {
+        console.log("***response***");
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
 
   scheduleTokenRenewal() {
     const delay = _expiresAt - Date.now();

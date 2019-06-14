@@ -5,6 +5,7 @@ import "typeface-roboto";
 import axios from "axios";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import LogOutIcon from "@material-ui/icons/ExitToApp";
 
 /* App Bar */
 import AppBar from "@material-ui/core/AppBar";
@@ -13,6 +14,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import IconButton from "@material-ui/core/IconButton";
+import Auth from "../Auth/Auth.js";
 
 /* Footer */
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -168,6 +170,11 @@ const App = () => {
     });
   };
 
+  const handleLogOutClick = () => {
+    const auth = new Auth();
+    auth.logout();
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -201,6 +208,9 @@ const App = () => {
             onClick={handleAddClick}
           >
             <AddIcon />
+          </IconButton>
+          <IconButton onClick={handleLogOutClick}>
+            <LogOutIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
