@@ -142,7 +142,9 @@ const App = () => {
 
   React.useEffect(() => {
     if (!initialized) {
-      axios.get(GET_RECIPES_URL).then(({ data }) => {
+      const user_id = localStorage.getItem("user_id");
+      axios.post(GET_RECIPES_URL, { user_id: user_id }).then(({ data }) => {
+        console.log(data);
         setRecipeList(data);
       });
 
@@ -165,7 +167,8 @@ const App = () => {
   };
 
   const handleSaveClick = value => {
-    axios.get(GET_RECIPES_URL).then(({ data }) => {
+    const user_id = localStorage.getItem("user_id");
+    axios.post(GET_RECIPES_URL, { user_id: user_id }).then(({ data }) => {
       setRecipeList(data);
     });
   };

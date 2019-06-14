@@ -74,13 +74,16 @@ function RecipeCardDisplay(props) {
     for (const val in steps) {
       stps.push(steps[val].value);
     }
+    const user_id = localStorage.getItem("user_id");
+
     const recipe = {
       id: props.recipeData.id,
       title: title,
       subtitle: subtitle,
       ingredients: ingred,
       steps: stps,
-      notes: notes
+      notes: notes,
+      created_by: user_id
     };
 
     axios

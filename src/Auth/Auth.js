@@ -5,6 +5,7 @@ const ACCESS_TOKEN = "access_token";
 const ID_TOKEN = "id_token";
 const SCOPE = "scope";
 const EXPIRES_AT = "expires_at";
+const USER_ID = "user_id";
 const GET_USER_URL =
   "https://us-central1-myrecipes-f34ca.cloudfunctions.net/users/getUser";
 
@@ -31,6 +32,7 @@ export default class Auth {
     localStorage.removeItem(SCOPE);
     localStorage.removeItem(EXPIRES_AT);
     localStorage.removeItem(ID_TOKEN);
+    localStorage.removeItem(USER_ID);
 
     let auth = new auth0.WebAuth({
       domain: "grubnote.auth0.com",
@@ -49,7 +51,7 @@ export default class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        return "/";
+        //return "/";
       } else if (err) {
         alert(`Error: ${err.error}. Check the console for further details.`);
         console.log(err);
@@ -71,10 +73,10 @@ export default class Auth {
     _accessToken = authResult.accessToken;
     _idToken = authResult.idToken;
 
-    localStorage.setItem(ACCESS_TOKEN, _accessToken);
-    localStorage.setItem(SCOPE, _scopes);
-    localStorage.setItem(EXPIRES_AT, _expiresAt);
-    localStorage.setItem(ID_TOKEN, _idToken);
+    localStorage.setItem(EXPIRES_AT, JSON.stringify(_expiresAt));
+    localStorage.setItem(SCOPE, JSON.stringify(_scopes));
+    localStorage.setItem(ACCESS_TOKEN, JSON.stringify(_accessToken));
+    localStorage.setItem(ID_TOKEN, JSON.stringify(_idToken));
 
     this.getUser(authResult.idTokenPayload);
     this.scheduleTokenRenewal();
@@ -88,6 +90,7 @@ export default class Auth {
       .then(function(response) {
         console.log("***response***");
         console.log(response);
+        localStorage.setItem(USER_ID, response.data.id);
       })
       .catch(function(error) {
         console.log(error);
