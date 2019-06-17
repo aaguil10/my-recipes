@@ -1,29 +1,26 @@
 import auth0 from "auth0-js";
 import axios from "axios";
+import Utils from "../Utils";
 
 const ACCESS_TOKEN = "access_token";
 const ID_TOKEN = "id_token";
 const SCOPE = "scope";
 const EXPIRES_AT = "expires_at";
 const USER_ID = "user_id";
-const GET_USER_URL =
-  "https://us-central1-myrecipes-f34ca.cloudfunctions.net/users/getUser";
+const GET_USER_URL = Utils.getApiUrl() + "/users/getUser";
 
 let _idToken = null;
 let _accessToken = null;
 let _scopes = null;
 let _expiresAt = null;
 
-export default class Auth {
-  auth0 = new auth0.WebAuth({
-    domain: "grubnote.auth0.com",
-    clientID: "1usBkm70LnyBCx8qrXcgbH7EMFP9dwak",
-    redirectUri: "http://localhost:3000/callback",
-    responseType: "token id_token",
-    scope: "openid profile email"
-  });
+class Auth {
+  auth0 = Auth.getAuth0();
 
   login() {
+    console.log(process.env.REACT_APP_AUTH0_DOMAIN);
+    console.log(process.env.NODE_ENV);
+
     this.auth0.authorize();
   }
 
@@ -34,17 +31,18 @@ export default class Auth {
     localStorage.removeItem(ID_TOKEN);
     localStorage.removeItem(USER_ID);
 
-    let auth = new auth0.WebAuth({
-      domain: "grubnote.auth0.com",
-      clientID: "1usBkm70LnyBCx8qrXcgbH7EMFP9dwak",
-      redirectUri: "http://localhost:3000/callback",
-      responseType: "token id_token",
-      scope: "openid profile email"
-    });
-    auth.logout({
-      clientID: "1usBkm70LnyBCx8qrXcgbH7EMFP9dwak",
-      returnTo: "http://localhost:3000"
-    });
+    let auth = Auth.getAuth0();
+    if (process.env.NODE_ENV === "development") {
+      auth.logout({
+        clientID: process.env.REACT_APP_DEV_AUTH0_CLIENT_ID,
+        returnTo: process.env.REACT_APP_DEV_AUTH0_LOGOUT_URL
+      });
+    } else {
+      auth.logout({
+        clientID: process.env.REACT_APP_PROD_AUTH0_CLIENT_ID,
+        returnTo: process.env.REACT_APP_PROD_AUTH0_LOGOUT_URL
+      });
+    }
   }
 
   handleAuthentication = () => {
@@ -106,4 +104,32 @@ export default class Auth {
     _expiresAt = localStorage.getItem(EXPIRES_AT);
     return new Date().getTime() < _expiresAt;
   }
+
+  static getAuth0() {
+    let responseType = "token id_token";
+    let scope = "openid profile email";
+    let _auth0;
+    console.log("***NODE_ENV***");
+    console.log(process.env.NODE_ENV);
+    if (process.env.NODE_ENV === "development") {
+      _auth0 = new auth0.WebAuth({
+        domain: process.env.REACT_APP_DEV_AUTH0_DOMAIN,
+        clientID: process.env.REACT_APP_DEV_AUTH0_CLIENT_ID,
+        redirectUri: process.env.REACT_APP_DEV_AUTH0_CALLBACK_URL,
+        responseType: responseType,
+        scope: scope
+      });
+    } else {
+      _auth0 = new auth0.WebAuth({
+        domain: process.env.REACT_APP_PROD_AUTH0_DOMAIN,
+        clientID: process.env.REACT_APP_PROD_AUTH0_CLIENT_ID,
+        redirectUri: process.env.REACT_APP_PROD_AUTH0_CALLBACK_URL,
+        responseType: responseType,
+        scope: scope
+      });
+    }
+    return _auth0;
+  }
 }
+
+export default Auth;

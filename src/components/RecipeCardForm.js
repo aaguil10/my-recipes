@@ -14,9 +14,9 @@ import SaveIcon from "@material-ui/icons/Save";
 
 import IngredientItem from "./IngredientItem.js";
 import StepItem from "./StepItem.js";
+import Utils from "../Utils";
 
-const INSERT_RECIPE_URL =
-  "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/insert";
+const INSERT_RECIPE_URL = Utils.getApiUrl() + "/recipe/insert";
 
 const useStyles = makeStyles(theme => ({
   card: {

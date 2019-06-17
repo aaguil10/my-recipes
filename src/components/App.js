@@ -15,6 +15,7 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import IconButton from "@material-ui/core/IconButton";
 import Auth from "../Auth/Auth.js";
+import Utils from "../Utils";
 
 /* Footer */
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -23,8 +24,7 @@ import Container from "@material-ui/core/Container";
 import CardGrid from "./CardGrid";
 import Logo from "./Logo";
 
-const GET_RECIPES_URL =
-  "https://us-central1-myrecipes-f34ca.cloudfunctions.net/recipe/getrecipes";
+const GET_RECIPES_URL = Utils.getApiUrl() + "/recipe/getrecipes";
 
 const useStyles = makeStyles(theme => ({
   root: {
