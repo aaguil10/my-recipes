@@ -18,9 +18,6 @@ class Auth {
   auth0 = Auth.getAuth0();
 
   login() {
-    console.log(process.env.REACT_APP_AUTH0_DOMAIN);
-    console.log(process.env.NODE_ENV);
-
     this.auth0.authorize();
   }
 
@@ -49,16 +46,15 @@ class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        //return "/";
+        return "/";
       } else if (err) {
-        alert(`Error: ${err.error}. Check the console for further details.`);
         console.log(err);
+        return "/Error";
       }
     });
   };
 
   setSession = authResult => {
-    console.log(authResult);
     // set the time that the access token will expire
     _expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
 
@@ -89,6 +85,7 @@ class Auth {
         console.log("***response***");
         console.log(response);
         localStorage.setItem(USER_ID, response.data.id);
+        window.location.reload();
       })
       .catch(function(error) {
         console.log(error);
@@ -109,8 +106,6 @@ class Auth {
     let responseType = "token id_token";
     let scope = "openid profile email";
     let _auth0;
-    console.log("***NODE_ENV***");
-    console.log(process.env.NODE_ENV);
     if (process.env.NODE_ENV === "development") {
       _auth0 = new auth0.WebAuth({
         domain: process.env.REACT_APP_DEV_AUTH0_DOMAIN,

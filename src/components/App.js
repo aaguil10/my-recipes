@@ -143,10 +143,24 @@ const App = () => {
   React.useEffect(() => {
     if (!initialized) {
       const user_id = localStorage.getItem("user_id");
-      axios.post(GET_RECIPES_URL, { user_id: user_id }).then(({ data }) => {
-        console.log(data);
-        setRecipeList(data);
-      });
+      const access_token = localStorage.getItem("access_token");
+      var config = {
+        headers: {
+          Authorization: "Bearer " + access_token
+        }
+      };
+      axios
+        .post(
+          GET_RECIPES_URL,
+          {
+            user_id: user_id,
+            token: localStorage.getItem("jwt").split("=")[1]
+          },
+          config
+        )
+        .then(({ data }) => {
+          setRecipeList(data);
+        });
 
       setInitialized(true);
     }

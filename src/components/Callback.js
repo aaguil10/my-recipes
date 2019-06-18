@@ -8,15 +8,25 @@ class Callback extends Component {
   };
 
   componentDidMount = () => {
+    let hash = this.props.location.hash;
     // Handle authentication if expected values are in the URL.
-    if (/access_token|id_token|error/.test(this.props.location.hash)) {
+    if (/access_token|id_token|error/.test(hash)) {
+      if (hash.includes("error")) {
+        this.setState({
+          target: <Redirect to="/error" err={hash} />
+        });
+        return;
+      }
       const auth = new Auth();
-      const target = auth.handleAuthentication();
+      auth.handleAuthentication();
+      let redirect = auth.isAuthenticated() ? (
+        <Redirect to="/" />
+      ) : (
+        <Redirect to="/login" />
+      );
       this.setState({
-        target: <Redirect to={target} />
+        target: redirect
       });
-    } else {
-      throw new Error("Invalid callback URL.");
     }
   };
 
