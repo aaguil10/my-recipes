@@ -1,6 +1,7 @@
 import auth0 from "auth0-js";
 import axios from "axios";
 import Utils from "../Utils";
+import DataHandler from "../DataHandler";
 
 const ACCESS_TOKEN = "access_token";
 const ID_TOKEN = "id_token";
@@ -27,6 +28,7 @@ class Auth {
     localStorage.removeItem(EXPIRES_AT);
     localStorage.removeItem(ID_TOKEN);
     localStorage.removeItem(USER_ID);
+    DataHandler.cleanLocalStorage();
 
     let auth = Auth.getAuth0();
     if (process.env.NODE_ENV === "development") {

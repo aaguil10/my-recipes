@@ -12,6 +12,7 @@ import AddIcon from "@material-ui/icons/Add";
 import LogOutIcon from "@material-ui/icons/ExitToApp";
 import Logo from "./Logo";
 import Typography from "@material-ui/core/Typography";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -103,6 +104,8 @@ const TopBar = props => {
     props.handleLogOutClick();
   };
 
+  let Progress = props.isLoading ? <LinearProgress /> : null;
+
   return (
     <AppBar className={classes.appBar} position="static">
       <Toolbar>
@@ -138,6 +141,7 @@ const TopBar = props => {
           <LogOutIcon />
         </IconButton>
       </Toolbar>
+      {Progress}
     </AppBar>
   );
 };

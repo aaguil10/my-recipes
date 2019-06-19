@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import CardGrid from "./CardGrid";
 import TopBar from "./TopBar";
+import DataHandler from "../DataHandler";
 
 const GET_RECIPES_URL = Utils.getApiUrl() + "/recipe/getrecipes";
 
@@ -54,38 +55,21 @@ const App = () => {
   const classes = useStyles();
   const [recipeList, setRecipeList] = React.useState([]);
   const [initialized, setInitialized] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    if (!initialized) {
-      const user_id = localStorage.getItem("user_id");
-      const access_token = localStorage.getItem("access_token");
-      var config = {
-        headers: {
-          Authorization: "Bearer " + access_token
-        }
-      };
-      let data = JSON.parse(localStorage.getItem("recipe_list"));
-      if (data != undefined) {
-        setRecipeList(data);
-      } else {
-        axios
-          .post(
-            GET_RECIPES_URL,
-            {
-              user_id: user_id,
-              token: localStorage.getItem("jwt").split("=")[1]
-            },
-            config
-          )
-          .then(({ data }) => {
-            localStorage.setItem("recipe_list", JSON.stringify(data));
-            setRecipeList(data);
-          });
-      }
-
-      setInitialized(true);
+    let data = DataHandler.getRecipeList(dataCallcack);
+    if (data.length !== 0) {
+      setIsLoading(false);
     }
-  });
+    setRecipeList(data);
+    setInitialized(true);
+  }, [initialized]);
+
+  function dataCallcack(data) {
+    setIsLoading(false);
+    setRecipeList(data);
+  }
 
   const handleAddClick = () => {
     const newRecipeList = recipeList.slice();
@@ -120,6 +104,7 @@ const App = () => {
       <TopBar
         handleAddClick={handleAddClick}
         handleLogOutClick={handleLogOutClick}
+        isLoading={isLoading}
       />
 
       <Container component="main" className={classes.main} maxWidth="auto">
