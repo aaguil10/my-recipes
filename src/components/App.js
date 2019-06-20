@@ -1,23 +1,19 @@
 import React from "react";
+
 import "../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import "typeface-roboto";
-import axios from "axios";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 
-import Auth from "../Auth/Auth.js";
-import Utils from "../Utils";
-
-/* Footer */
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+
 import CardGrid from "./CardGrid";
 import TopBar from "./TopBar";
 import DataHandler from "../DataHandler";
-
-const GET_RECIPES_URL = Utils.getApiUrl() + "/recipe/getrecipes";
+import Auth from "../Auth/Auth.js";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,7 +64,10 @@ const App = () => {
 
   function dataCallcack(data) {
     setIsLoading(false);
-    setRecipeList(data);
+    console.log(data);
+    if (Array.isArray(data)) {
+      setRecipeList(data);
+    }
   }
 
   const handleAddClick = () => {
@@ -85,11 +84,9 @@ const App = () => {
     setRecipeList(newRecipeList);
   };
 
-  const handleSaveClick = value => {
-    const user_id = localStorage.getItem("user_id");
-    axios.post(GET_RECIPES_URL, { user_id: user_id }).then(({ data }) => {
-      setRecipeList(data);
-    });
+  const handleSaveClick = () => {
+    setIsLoading(true);
+    DataHandler.getRecipeList(dataCallcack);
   };
 
   const handleLogOutClick = () => {

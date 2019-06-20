@@ -5,18 +5,13 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import axios from "axios";
-
 import TextField from "@material-ui/core/TextField";
-
 import AddIcon from "@material-ui/icons/Add";
 import SaveIcon from "@material-ui/icons/Save";
 
 import IngredientItem from "./IngredientItem.js";
 import StepItem from "./StepItem.js";
-import Utils from "../Utils";
-
-const INSERT_RECIPE_URL = Utils.getApiUrl() + "/recipe/insert";
+import DataHandler from "../DataHandler.js";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -74,6 +69,7 @@ function RecipeCardDisplay(props) {
     for (const val in steps) {
       stps.push(steps[val].value);
     }
+
     const user_id = localStorage.getItem("user_id");
 
     const recipe = {
@@ -86,17 +82,9 @@ function RecipeCardDisplay(props) {
       created_by: user_id
     };
 
-    axios
-      .post(INSERT_RECIPE_URL, recipe)
-      .then(function(response) {
-        console.log(response);
-        props.onClick(recipe);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-
-    //Todo: Add loading bar while waiting for recipe to insert.
+    DataHandler.insertRecipe(recipe, () => {
+      props.onClick();
+    });
   };
 
   const handleIngredientChange = val => {
