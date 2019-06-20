@@ -18,14 +18,11 @@ class Callback extends Component {
         return;
       }
       const auth = new Auth();
-      auth.handleAuthentication();
-      let redirect = auth.isAuthenticated() ? (
-        <Redirect to="/" />
-      ) : (
-        <Redirect to="/login" />
-      );
-      this.setState({
-        target: redirect
+      auth.handleAuthentication(val => {
+        let redirect = <Redirect to={val} />;
+        this.setState({
+          target: redirect
+        });
       });
     }
   };

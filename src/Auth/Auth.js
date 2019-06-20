@@ -44,28 +44,25 @@ class Auth {
     }
   }
 
-  handleAuthentication = () => {
-    this.auth0.parseHash((err, authResult) => {
+  handleAuthentication = callback => {
+    this.auth0.parseHash(async (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-        return "/";
+        await this.setSession(authResult);
+        if (callback) {
+          callback("/");
+        }
       } else if (err) {
         console.log(err);
-        return "/Error";
+        if (callback) {
+          callback("/Error");
+        }
       }
     });
   };
 
-  setSession = authResult => {
-    // set the time that the access token will expire
+  setSession = async authResult => {
     _expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
-
-    // If there is a value on the `scope` param from the authResult,
-    // use it to set scopes in the session for the user. Otherwise
-    // use the scopes as requested. If no scopes were requested,
-    // set it to nothing
     _scopes = authResult.scope || this.requestedScopes || "";
-
     _accessToken = authResult.accessToken;
     _idToken = authResult.idToken;
 
@@ -74,24 +71,19 @@ class Auth {
     localStorage.setItem(ACCESS_TOKEN, JSON.stringify(_accessToken));
     localStorage.setItem(ID_TOKEN, JSON.stringify(_idToken));
 
-    this.getUser(authResult.idTokenPayload);
     this.scheduleTokenRenewal();
+    const result = await this.getUser(authResult.idTokenPayload);
+    return result;
   };
 
-  getUser(idTokenPayload) {
+  async getUser(idTokenPayload) {
     console.log("***idTokenPayload***");
     console.log(idTokenPayload);
-    axios
-      .post(GET_USER_URL, idTokenPayload)
-      .then(function(response) {
-        console.log("***response***");
-        console.log(response);
-        localStorage.setItem(USER_ID, response.data.id);
-        window.location.reload();
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    const response = await axios.post(GET_USER_URL, idTokenPayload);
+    console.log("***response***");
+    console.log(response);
+    localStorage.setItem(USER_ID, response.data.id);
+    return response;
   }
 
   scheduleTokenRenewal() {
