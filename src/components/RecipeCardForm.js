@@ -70,7 +70,7 @@ function RecipeCardDisplay(props) {
       stps.push(steps[val].value);
     }
 
-    const user_id = localStorage.getItem("user_id");
+    const user_id = DataHandler.getUserID();
 
     const recipe = {
       id: props.recipeData.id,

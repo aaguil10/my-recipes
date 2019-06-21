@@ -13,7 +13,6 @@ import AddIcon from "@material-ui/icons/Add";
 import CardGrid from "./CardGrid";
 import TopBar from "./TopBar";
 import DataHandler from "../DataHandler";
-import Auth from "../Auth/Auth.js";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -89,20 +88,11 @@ const App = () => {
     DataHandler.getRecipeList(dataCallcack);
   };
 
-  const handleLogOutClick = () => {
-    const auth = new Auth();
-    auth.logout();
-  };
-
   return (
     <div className={classes.root}>
       <CssBaseline />
 
-      <TopBar
-        handleAddClick={handleAddClick}
-        handleLogOutClick={handleLogOutClick}
-        isLoading={isLoading}
-      />
+      <TopBar handleAddClick={handleAddClick} isLoading={isLoading} />
 
       <Container component="main" className={classes.main} maxWidth="auto">
         <CardGrid recipeList={recipeList} handleSaveClick={handleSaveClick} />

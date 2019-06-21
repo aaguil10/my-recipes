@@ -1,14 +1,10 @@
 import auth0 from "auth0-js";
-import axios from "axios";
-import Utils from "../Utils";
 import DataHandler from "../DataHandler";
 
 const ACCESS_TOKEN = "access_token";
 const ID_TOKEN = "id_token";
 const SCOPE = "scope";
 const EXPIRES_AT = "expires_at";
-const USER_ID = "user_id";
-const GET_USER_URL = Utils.getApiUrl() + "/users/getUser";
 
 let _idToken = null;
 let _accessToken = null;
@@ -27,7 +23,6 @@ class Auth {
     localStorage.removeItem(SCOPE);
     localStorage.removeItem(EXPIRES_AT);
     localStorage.removeItem(ID_TOKEN);
-    localStorage.removeItem(USER_ID);
     DataHandler.cleanLocalStorage();
 
     let auth = Auth.getAuth0();
@@ -72,19 +67,9 @@ class Auth {
     localStorage.setItem(ID_TOKEN, JSON.stringify(_idToken));
 
     this.scheduleTokenRenewal();
-    const result = await this.getUser(authResult.idTokenPayload);
+    const result = await DataHandler.getUser(authResult.idTokenPayload);
     return result;
   };
-
-  async getUser(idTokenPayload) {
-    console.log("***idTokenPayload***");
-    console.log(idTokenPayload);
-    const response = await axios.post(GET_USER_URL, idTokenPayload);
-    console.log("***response***");
-    console.log(response);
-    localStorage.setItem(USER_ID, response.data.id);
-    return response;
-  }
 
   scheduleTokenRenewal() {
     const delay = _expiresAt - Date.now();

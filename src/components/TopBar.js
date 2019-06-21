@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "typeface-roboto";
-/* App Bar */
+
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import SearchIcon from "@material-ui/icons/Search";
@@ -9,10 +9,11 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
-import LogOutIcon from "@material-ui/icons/ExitToApp";
-import Logo from "./Logo";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
+
+import Profile from "./Profile";
+import Logo from "./Logo";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -100,10 +101,6 @@ const TopBar = props => {
     props.handleAddClick();
   };
 
-  const handleLogOutClick = () => {
-    props.handleLogOutClick();
-  };
-
   let Progress = props.isLoading ? <LinearProgress /> : null;
 
   return (
@@ -137,9 +134,7 @@ const TopBar = props => {
         >
           <AddIcon />
         </IconButton>
-        <IconButton onClick={handleLogOutClick}>
-          <LogOutIcon />
-        </IconButton>
+        <Profile />
       </Toolbar>
       {Progress}
     </AppBar>

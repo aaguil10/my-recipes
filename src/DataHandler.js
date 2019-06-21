@@ -2,8 +2,11 @@ import axios from "axios";
 import Utils from "./Utils";
 
 const RECIPE_LIST = "recipe_list";
+const PROFILE = "profile";
+
 const GET_RECIPES_URL = Utils.getApiUrl() + "/recipe/getrecipes";
 const INSERT_RECIPE_URL = Utils.getApiUrl() + "/recipe/insert";
+const GET_USER_URL = Utils.getApiUrl() + "/users/getUser";
 
 function getConfig() {
   const access_token = localStorage.getItem("access_token");
@@ -33,7 +36,7 @@ class DataHandler {
   }
 
   static getRecipeList(callback) {
-    const user_id = localStorage.getItem("user_id");
+    const user_id = this.getUserID();
     axios
       .post(
         GET_RECIPES_URL,
@@ -61,6 +64,38 @@ class DataHandler {
 
   static cleanLocalStorage() {
     localStorage.removeItem(RECIPE_LIST);
+  }
+
+  static async getUser(idTokenPayload) {
+    console.log("***idTokenPayload***");
+    console.log(idTokenPayload);
+    const response = await axios.post(GET_USER_URL, idTokenPayload);
+    console.log("***response***");
+    console.log(response);
+    // localStorage.setItem(USER_ID, response.data.id);
+    // localStorage.setItem(PROFILE_IMG_URL, response.data.picture);
+    localStorage.setItem(PROFILE, JSON.stringify(response.data));
+    return response;
+  }
+
+  static getProfileURL() {
+    const profile = JSON.parse(localStorage.getItem(PROFILE));
+    return profile.picture;
+  }
+
+  static getUserID() {
+    const profile = JSON.parse(localStorage.getItem(PROFILE));
+    return profile.id;
+  }
+
+  static getUserFLName() {
+    const profile = JSON.parse(localStorage.getItem(PROFILE));
+    return profile.first_name + profile.last_name;
+  }
+
+  static getUserEmail() {
+    const profile = JSON.parse(localStorage.getItem(PROFILE));
+    return profile.email;
   }
 }
 
