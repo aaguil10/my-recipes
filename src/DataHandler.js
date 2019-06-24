@@ -72,8 +72,6 @@ class DataHandler {
     const response = await axios.post(GET_USER_URL, idTokenPayload);
     console.log("***response***");
     console.log(response);
-    // localStorage.setItem(USER_ID, response.data.id);
-    // localStorage.setItem(PROFILE_IMG_URL, response.data.picture);
     localStorage.setItem(PROFILE, JSON.stringify(response.data));
     return response;
   }

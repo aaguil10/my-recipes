@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
@@ -8,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import AddIcon from "@material-ui/icons/Add";
 import SaveIcon from "@material-ui/icons/Save";
+import CreateIcon from "@material-ui/icons/Create";
+import Dialog from "@material-ui/core/Dialog";
 
 import IngredientItem from "./IngredientItem.js";
 import StepItem from "./StepItem.js";
@@ -59,6 +60,7 @@ function RecipeCardDisplay(props) {
     buildStepObj(props.recipeData.steps)
   );
   const [notes, setNotes] = React.useState(props.recipeData.notes);
+  const [open, setOpen] = React.useState(false);
 
   const handleSaveClick = () => {
     const ingred = [];
@@ -84,7 +86,16 @@ function RecipeCardDisplay(props) {
 
     DataHandler.insertRecipe(recipe, () => {
       props.onClick();
+      setOpen(false);
     });
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleIngredientChange = val => {
@@ -144,73 +155,85 @@ function RecipeCardDisplay(props) {
   };
 
   return (
-    <Card className={classes.card}>
-      <CardContent>
-        <TextField
-          id="filled-bare"
-          label="Name"
-          className={classes.textField}
-          defaultValue={title}
-          onChange={e => setTitle(e.target.value)}
-          margin="normal"
-          variant="filled"
-        />
-        <TextField
-          id="filled-bare"
-          label="Subtitle"
-          className={classes.textField}
-          defaultValue={subtitle}
-          onChange={e => setSubtitle(e.target.value)}
-          margin="normal"
-          variant="filled"
-        />
-        <Typography variant="h6">
-          Ingredients{" "}
-          <IconButton aria-label="Add Ingredient" onClick={handleAddIngredient}>
-            <AddIcon />
-          </IconButton>
-        </Typography>
-        {ingredients.map(ingredient => (
-          <IngredientItem
-            key={ingredient.id}
-            id={ingredient.id}
-            value={ingredient.value}
-            onChange={handleIngredientChange}
-            onClick={handleRemoveIngregient}
+    <div>
+      <IconButton aria-label="Edit Recipe" onClick={handleClickOpen}>
+        <CreateIcon />
+      </IconButton>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <CardContent>
+          <TextField
+            id="filled-bare"
+            label="Name"
+            className={classes.textField}
+            defaultValue={title}
+            onChange={e => setTitle(e.target.value)}
+            margin="normal"
+            variant="filled"
           />
-        ))}
-        <Typography variant="h6">
-          Steps
-          <IconButton aria-label="Add Step" onClick={handleAddStep}>
-            <AddIcon />
-          </IconButton>
-        </Typography>
-        {steps.map(step => (
-          <StepItem
-            key={step.id}
-            id={step.id}
-            value={step.value}
-            onChange={handleStepsChange}
-            onClick={handleRemoveStep}
+          <TextField
+            id="filled-bare"
+            label="Subtitle"
+            className={classes.textField}
+            defaultValue={subtitle}
+            onChange={e => setSubtitle(e.target.value)}
+            margin="normal"
+            variant="filled"
           />
-        ))}
-        <TextField
-          id="filled-bare"
-          label="Notes"
-          className={classes.textField}
-          defaultValue={notes}
-          onChange={e => setNotes(e.target.value)}
-          margin="normal"
-          variant="filled"
-          multiline
-        />
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="Save Recipe" onClick={handleSaveClick}>
-          <SaveIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
+          <Typography variant="h6">
+            Ingredients{" "}
+            <IconButton
+              aria-label="Add Ingredient"
+              onClick={handleAddIngredient}
+            >
+              <AddIcon />
+            </IconButton>
+          </Typography>
+          {ingredients.map(ingredient => (
+            <IngredientItem
+              key={ingredient.id}
+              id={ingredient.id}
+              value={ingredient.value}
+              onChange={handleIngredientChange}
+              onClick={handleRemoveIngregient}
+            />
+          ))}
+          <Typography variant="h6">
+            Steps
+            <IconButton aria-label="Add Step" onClick={handleAddStep}>
+              <AddIcon />
+            </IconButton>
+          </Typography>
+          {steps.map(step => (
+            <StepItem
+              key={step.id}
+              id={step.id}
+              value={step.value}
+              onChange={handleStepsChange}
+              onClick={handleRemoveStep}
+            />
+          ))}
+          <TextField
+            id="filled-bare"
+            label="Notes"
+            className={classes.textField}
+            defaultValue={notes}
+            onChange={e => setNotes(e.target.value)}
+            margin="normal"
+            variant="filled"
+            multiline
+          />
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton aria-label="Save Recipe" onClick={handleSaveClick}>
+            <SaveIcon />
+          </IconButton>
+        </CardActions>
+      </Dialog>
+    </div>
   );
 }
 

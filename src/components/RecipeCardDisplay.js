@@ -10,10 +10,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Container from "@material-ui/core/Container";
-import axios from "axios";
 
-import CreateIcon from "@material-ui/icons/Create";
 import CloudDownload from "@material-ui/icons/CloudDownload";
+import RecipeCardForm from "./RecipeCardForm";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -52,21 +51,12 @@ const RecipeCardDisplay = props => {
     setExpanded(!expanded);
   }
 
-  const handleEditClick = () => {
-    props.onClick(props.recipeData);
+  const handleSaveClick = () => {
+    props.handleSaveClick(props.recipeData);
   };
 
   const handleDownloadClick = async () => {
     console.log("Clicked handleDownloadClick");
-    try {
-      const response = await axios.post(
-        "https://us-central1-myrecipes-f34ca.cloudfunctions.net/insertRecipe",
-        { posted_data: "example" }
-      );
-      console.log("👉 Returned data:", response);
-    } catch (e) {
-      console.log(`😱 Axios request failed: ${e}`);
-    }
   };
 
   let stepConut = 1;
@@ -89,9 +79,11 @@ const RecipeCardDisplay = props => {
         ))}
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="Edit Recipe">
-          <CreateIcon onClick={handleEditClick} />
-        </IconButton>
+        <RecipeCardForm
+          key={props.recipeData.id}
+          recipeData={props.recipeData}
+          onClick={handleSaveClick}
+        />
         <IconButton aria-label="Download Recipe">
           <CloudDownload onClick={handleDownloadClick} />
         </IconButton>
