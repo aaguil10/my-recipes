@@ -19,7 +19,7 @@ const Logo = props => {
       width={props.width}
       height={props.height}
       viewBox="0 0 792 612"
-      enable-background="new 0 0 792 612"
+      enableBackground="new 0 0 792 612"
     >
       <g>
         <g>

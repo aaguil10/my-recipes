@@ -20,10 +20,14 @@ function getConfig() {
 
 class DataHandler {
   static insertRecipe(recipe, callback) {
+    console.log("**recipe**");
+    console.log(recipe);
     axios
       .post(INSERT_RECIPE_URL, recipe, getConfig())
       .then(function(response) {
         if (callback != null) {
+          console.log("**response**");
+          console.log(response);
           callback(response);
         }
       })

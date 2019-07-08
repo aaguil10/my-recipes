@@ -36,7 +36,10 @@ const useStyles = makeStyles(theme => ({
 function buildIngredientObj(ingredients) {
   let ingredientObjs = [];
   for (let id = 0; id < ingredients.length; id++) {
-    ingredientObjs.push({ id: id, value: ingredients[id] });
+    ingredientObjs.push({
+      id: id,
+      value: ingredients[id]
+    });
   }
   return ingredientObjs;
 }
@@ -85,7 +88,7 @@ function RecipeCardDisplay(props) {
     };
 
     DataHandler.insertRecipe(recipe, () => {
-      props.onClick();
+      props.handleSaveClick();
       setOpen(false);
     });
   };
@@ -124,7 +127,12 @@ function RecipeCardDisplay(props) {
 
   function handleAddIngredient() {
     const newIngredients = ingredients.slice();
-    newIngredients.push({ id: ingredients.length, value: "" });
+    newIngredients.push({
+      id: ingredients.length,
+      amount: 0,
+      metric: "g",
+      value: { amount: 0, metric: "g", name: "" }
+    });
     setIngredients(newIngredients);
   }
 
@@ -174,15 +182,18 @@ function RecipeCardDisplay(props) {
             margin="normal"
             variant="filled"
           />
+
           <TextField
             id="filled-bare"
-            label="Subtitle"
+            label="Serves"
             className={classes.textField}
             defaultValue={subtitle}
             onChange={e => setSubtitle(e.target.value)}
             margin="normal"
             variant="filled"
+            type="number"
           />
+
           <Typography variant="h6">
             Ingredients{" "}
             <IconButton
@@ -196,6 +207,8 @@ function RecipeCardDisplay(props) {
             <IngredientItem
               key={ingredient.id}
               id={ingredient.id}
+              amount={ingredient.amount}
+              metric={ingredient.metric}
               value={ingredient.value}
               onChange={handleIngredientChange}
               onClick={handleRemoveIngregient}

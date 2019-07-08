@@ -64,17 +64,27 @@ const RecipeCardDisplay = props => {
     return stepConut++;
   }
 
+  function getIngredientString(ingredient) {
+    try {
+      return (
+        ingredient.amount + " " + ingredient.metric + " " + ingredient.name
+      );
+    } catch (err) {
+      return JSON.stringify(ingredient);
+    }
+  }
+
   return (
     <Card className={classes.card}>
       <CardHeader
         className={classes.cardHeader}
         title={props.recipeData.title} //recipe name
-        subheader={props.recipeData.subtitle} //Short Note
+        subheader={"Serves: " + props.recipeData.subtitle} //Short Note
       />
       <CardContent>
         {props.recipeData.ingredients.map(ingredient => (
-          <Typography variant="body2" component="p">
-            {ingredient}
+          <Typography key={ingredient.name} variant="body2" component="p">
+            {getIngredientString(ingredient)}
           </Typography>
         ))}
       </CardContent>
@@ -82,11 +92,11 @@ const RecipeCardDisplay = props => {
         <RecipeCardForm
           key={props.recipeData.id}
           recipeData={props.recipeData}
-          onClick={handleSaveClick}
+          handleSaveClick={handleSaveClick}
         />
-        <IconButton aria-label="Download Recipe">
+        {/* <IconButton aria-label="Download Recipe">
           <CloudDownload onClick={handleDownloadClick} />
-        </IconButton>
+        </IconButton> */}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded

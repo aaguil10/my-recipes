@@ -94,7 +94,7 @@ const App = () => {
 
       <TopBar handleAddClick={handleAddClick} isLoading={isLoading} />
 
-      <Container component="main" className={classes.main} maxWidth="auto">
+      <Container component="main" className={classes.main}>
         <CardGrid recipeList={recipeList} handleSaveClick={handleSaveClick} />
       </Container>
 
